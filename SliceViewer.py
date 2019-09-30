@@ -55,7 +55,7 @@ def main():
     print(np.max(imfix))
     print(np.max(immov_reg))
 
-    multi_slice_viewer(immfix-immov_reg)
+    multi_slice_viewer(imfix-immov_reg)
 
 if __name__ == '__main__':
     main()

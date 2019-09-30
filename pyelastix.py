@@ -589,9 +589,11 @@ def register(im1, im2, params, exact_params=False, verbose=1):
     if im2 is not None:
         fields = fields[0]  # For pairwise reg, return 1 field, not a list
     
+    with open(path_trafo_params) as f:
+        transfo_param = f.read()
     # Clean and return
     _clear_temp_dir()
-    return a, fields
+    return a, fields, transfo_param
 
 
 def _write_image_data(im, id):
