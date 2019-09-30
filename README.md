@@ -1,4 +1,6 @@
 # PyElastix - Python wrapper for the Elastix nonrigid registration toolkit
+## WARNING : This is a fork to fix some errors of the original PyElastix from almarklein.
+
 
 This Python module wraps the [Elastix](http://elastix.isi.uu.nl/)
 registration toolkit. Elastix is a powerful tool, suitable for 2D and 3D
