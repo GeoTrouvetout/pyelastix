@@ -964,7 +964,7 @@ def get_default_params(type='BSPLINE'):
     # which usually works well. In case of unusual high-resolution images
     # (eg histology) it is necessary to increase this value a bit, to the size
     # of the "smallest visible structure" in the image:
-    #p.MaximumStepLength = 1.0 Default uses voxel spaceing
+    #p.MaximumStepLength = 10.0 #Default uses voxel spaceing
     
     # Another optional parameter for the AdaptiveStochasticGradientDescent
     #p.SigmoidInitialTime = 4.0

@@ -48,8 +48,8 @@ def next_slice(ax):
 
 
 def main():
-    immov = np.load("MovImage_mod.npy")
-    imfix = np.load("FixImage_mod.npy")
+    immov = np.load("MovImage_Mk1o1_transf_mod.npy")
+    imfix = np.load("FixImage_Mk1o1_mod.npy")
     immov_reg = np.load("MovImage_mod_registered.npy")
     print(np.max(immov))
     print(np.max(imfix))
