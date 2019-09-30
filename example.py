@@ -14,7 +14,7 @@ print(immov.shape)
 params = pyelastix.get_default_params("RIGID")
 #params.MaximumNumberOfIterations = 200
 #params.FinalGridSpacingInVoxels = 10
-#params.Metric = "AdvancedMeanSquares"
+params.Metric = "AdvancedMeanSquares"
 
 
 
@@ -28,6 +28,6 @@ immov_deformed = immov_deformed/(immov_deformed.max()/255.0)
 
 np.save("MovImage_mod_registered.npy", immov_deformed)
 
-multi_slice_viewer( ( immov_deformed/np.max(immov_deformed) )  )
+multi_slice_viewer( immov_deformed - imfix )
 
 
