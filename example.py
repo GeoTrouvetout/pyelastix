@@ -1,41 +1,17 @@
+import numpy as np
 import pyelastix
 
-# To read the image data we use imageio
-import imageio
+immov = np.load("MovImage_mod.npy")
+imfix = np.load("FixImage_mod.npy")
 
-# Pick one lib to visualize the result, matplotlib or visvis
-#import visvis as plt
-import matplotlib.pyplot as plt
+print(immov.shape)
 
-
-# Read image data
-im1 = imageio.imread('chelsea.png')
-im2 = imageio.imread('chelsea_morph1.png')
-#im2 = imageio.imread('https://dl.dropboxusercontent.com/u/1463853/images/chelsea_morph1.png')
-
-# Select one channel (grayscale), and make float
-im1 = im1[:,:,1].astype('float32')
-im2 = im2[:,:,1].astype('float32')
-
-# Get default params and adjust
 params = pyelastix.get_default_params()
-params.NumberOfResolutions = 3
-print(params)
+params.MaximumNumberOfIterations = 200
+params.FinalGridSpacingInVoxels = 10
 
-# Register!
-im3, field = pyelastix.register(im1, im2, params)
 
-# Visualize the result
-fig = plt.figure(1);
-plt.clf()
-plt.subplot(231); plt.imshow(im1)
-plt.subplot(232); plt.imshow(im2)
-plt.subplot(234); plt.imshow(im3)
-plt.subplot(235); plt.imshow(field[0])
-plt.subplot(236); plt.imshow(field[1])
 
-# Enter mainloop
-if hasattr(plt, 'use'):
-    plt.use().Run()  # visvis
-else:
-    plt.show()  # mpl
+immov_deformed, field = pyelastix.register(immov, imfix, params, verbose=3)
+
+print(field)

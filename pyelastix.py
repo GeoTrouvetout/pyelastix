@@ -268,6 +268,42 @@ def _get_image_paths(im1, im2):
 
 
 # %% Some helper stuff
+def _system4(cmd, verbose=False):
+    """ Execute the given command in a subprocess and wait for it to finish.
+    A thread is run that prints output of the process if verbose is True.
+    """
+    
+    # Init flag
+    interrupted = False
+    
+    # Create progress
+    if verbose > 0:
+        progress = Progress()
+    
+    stdout = []
+    def poll_process(p):
+        while not interrupted:
+            msg = p.stdout.readline().decode()
+            if msg:
+                stdout.append(msg)
+                if 'error' in msg.lower():
+                    print(msg.rstrip())
+                    if verbose == 1:
+                        progress.reset()
+                elif verbose > 1:
+                    print(msg.rstrip())
+                elif verbose == 1:
+                    progress.update(msg)
+            else:
+                break
+            time.sleep(0.01)
+            p.wait()
+        #print("thread exit")
+    
+    # Start process that runs the command
+    print(cmd)
+    p = subprocess.run(cmd)
+    
 
 def _system3(cmd, verbose=False):
     """ Execute the given command in a subprocess and wait for it to finish.
@@ -298,12 +334,14 @@ def _system3(cmd, verbose=False):
             else:
                 break
             time.sleep(0.01)
+            p.wait()
         #print("thread exit")
     
     # Start process that runs the command
+    print(cmd)
     p = subprocess.Popen(cmd, shell=True, 
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    
+    print() 
     # Keep reading stdout from it
     # thread.start_new_thread(poll_process, (p,))  Python 2.x
     my_thread = threading.Thread(target=poll_process, args=(p,))
@@ -503,7 +541,8 @@ def register(im1, im2, params, exact_params=False, verbose=1):
                    '-out', tempdir, '-p', path_params]
         if verbose:
             print("Calling Elastix to register images ...")
-        _system3(command, verbose)
+        #_system3(command, verbose=3)
+        _system4(command, verbose=3)
         
         # Try and load result
         try:
@@ -518,7 +557,8 @@ def register(im1, im2, params, exact_params=False, verbose=1):
         # Compile command to execute
         command = [get_elastix_exes()[1],
                    '-def', 'all', '-out', tempdir, '-tp', path_trafo_params]
-        _system3(command, verbose)
+        #_system3(command, verbose)
+        _system4(command, verbose)
         
         # Try and load result
         try:
@@ -864,7 +904,8 @@ def get_default_params(type='BSPLINE'):
     
     
     # ===== Metric to use =====
-    p.Metric = 'AdvancedMattesMutualInformation'
+    #p.Metric = 'AdvancedMattesMutualInformation'
+    p.Metric = 'AdvancedMeanSquares'
     
     # Number of grey level bins in each resolution level,
     # for the mutual information. 16 or 32 usually works fine.
