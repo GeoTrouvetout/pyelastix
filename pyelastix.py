@@ -904,8 +904,8 @@ def get_default_params(type='BSPLINE'):
     
     
     # ===== Metric to use =====
-    #p.Metric = 'AdvancedMattesMutualInformation'
-    p.Metric = 'AdvancedMeanSquares'
+    p.Metric = 'AdvancedMattesMutualInformation'
+    #p.Metric = 'AdvancedMeanSquares'
     
     # Number of grey level bins in each resolution level,
     # for the mutual information. 16 or 32 usually works fine.
