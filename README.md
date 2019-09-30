@@ -12,9 +12,6 @@ see http://pyimreg.github.io.
 
 ## Installation
 
-Install this library using `pip install pyelastix` or
-`conda install pyelastix -c conda-forge`. This module depends on numpy.
-
 Further, the Elastix command-line application needs to be installed on
 your computer. You can obtain a copy at http://elastix.isi.uu.nl/.
 
