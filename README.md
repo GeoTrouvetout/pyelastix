@@ -1,5 +1,5 @@
 # PyElastix - Python wrapper for the Elastix nonrigid registration toolkit
-## WARNING : This is a fork of the original PyElastix from almarklein. This fork *fixes* some errors encountered with the use of "threading" (repklace by a single ~subprocess~). 
+## WARNING : This is a fork of the original PyElastix from almarklein. This fork *fixes* some errors encountered with the use of "threading" (repklace by a single _subprocess_). 
 
 
 
