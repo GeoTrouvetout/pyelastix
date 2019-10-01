@@ -266,6 +266,33 @@ def _get_image_paths(im1, im2):
     # Done
     return tuple(paths)
 
+def _get_image_path(im):
+    """ If the image are paths to a file, checks whether the file exist
+    and return the paths. If the image is numpy array, writes it
+    to disk and returns the path of the new file.
+    """
+    
+    path = ""
+    if isinstance(im, str):
+        # Given a location
+        if os.path.isfile(im):
+            path = im
+        else:
+            raise ValueError('Image location does not exist.')
+    
+    elif isinstance(im, np.ndarray):
+        # Given a numpy array
+        id = 1
+        p = _write_image_data(im, id)
+        path = p
+    
+    else:
+        # Given something else ...
+        raise ValueError('Invalid input image.')
+    
+    # Done
+    return path
+
 
 # %% Some helper stuff
 def _system4(cmd, verbose=False):
@@ -594,6 +621,37 @@ def register(im1, im2, params, exact_params=False, verbose=1):
     # Clean and return
     _clear_temp_dir()
     return a, fields, transfo_param
+
+
+def transform(im1, path_trafo_params, verbose=1):
+    
+    # Clear dir
+    tempdir = get_tempdir()
+    #_clear_temp_dir()
+    
+    # Get paths of input images
+    path_im1 = _get_image_path(im1)
+    
+    if True:
+        
+        # Compile command to execute
+        command = [get_elastix_exes()[1],
+                   '-in', path_im1 , '-def', 'all', '-out', tempdir, '-tp', path_trafo_params]
+        #_system3(command, verbose)
+        _system4(command, verbose)
+        
+        # Try and load result
+        try:
+            imout = _read_image_data('result.mhd')
+        except IOError as why:
+            tmp = "An error occured during transformation: " + str(why)
+            raise RuntimeError(tmp)
+    
+    
+    _clear_temp_dir()
+    return imout
+
+
 
 
 def _write_image_data(im, id):

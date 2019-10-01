@@ -6,10 +6,10 @@ from pprint import pprint
 
 
 
-#immov = np.load("MovImage_mod.npy")
-#imfix = np.load("FixImage_mod.npy")
-immov = np.load("MovImage_Mk1o1_transf_mod.npy")
-imfix = np.load("FixImage_Mk1o1_mod.npy")
+immov = np.load("MovImage_mod.npy")
+imfix = np.load("FixImage_mod.npy")
+#immov = np.load("MovImage_Mk1o1_transf_mod.npy")
+#imfix = np.load("FixImage_Mk1o1_mod.npy")
 imfix = imfix/(imfix.max()/255.0)
 immov = immov/(immov.max()/255.0)
 #immov = np.max(immov) - immov
@@ -33,16 +33,22 @@ pprint(params.as_dict())
 
 
 immov_deformed, field, transfo = pyelastix.register(immov, imfix, params, verbose=3)
+with open("transformation.txt", "w+") as f:
+    f.write(transfo)
+
+imtr = pyelastix.transform(immov, "transformation.txt")
+
 #
 #print()
-print(transfo)
+#print(transfo)
 #print()
 #print(immov_deformed.shape)
-immov_deformed = immov_deformed/(immov_deformed.max()/255.0)
+#immov_deformed = immov_deformed/(immov_deformed.max()/255.0)
+imtr = imtr/(imtr.max()/255.0)
 #
-np.save("MovImage_mod_registered.npy", immov_deformed)
+#np.save("MovImage_mod_registered.npy", immov_deformed)
 #
-multi_slice_viewer( immov_deformed - immov )
+multi_slice_viewer( imtr)
 
 
 
